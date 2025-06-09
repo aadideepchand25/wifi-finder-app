@@ -7,10 +7,10 @@ from typing import Optional
 class wifi_id_read(wifi_location):
     id: int
 
-class wifi_read(BaseModel):
+class wifi(BaseModel):
     location: wifi_location
     info: wifi_info
     times: Optional[wifi_times]
     
     class Config:
-        orm_mode = True
+        from_attributes = True
