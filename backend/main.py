@@ -12,11 +12,11 @@ async def GET_root():
 @app.get("/status")
 async def GET_status(db: Session = Depends(get_new_session)):
     try:
-        db.query(text("SELECT 1"))
-        return "Database is connected"
+        db.execute(text("SELECT 1"))
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
     except Exception as e:
-        return "ERROR: Database is not connected - " + str(e)
-
+        return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 @app.get("/wifi/nearby")
 async def GET_wifi_nearby(lat: float, long: float, radius: int):
     return str(lat) + "," + str(long) + "," + str(radius)

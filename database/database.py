@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 URI = os.getenv("dburi")
 
 engine = create_engine(URI)

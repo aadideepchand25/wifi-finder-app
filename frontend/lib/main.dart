@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/services/api_contact.dart';
+import 'package:frontend/src/services/ping.dart';
 
 void main() {
   runApp(const WiFiFinderApp());
@@ -24,19 +24,18 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   String message = "";
   bool isTalking = false;
-  final APIContact api = APIContact();
 
-  Future<void> pingBackend() async {
-    setState(() {
-      message = "Attempting to ping server";
-      isTalking = true;
-    });
-    final backend_message = await api.checkAPIStatus();
-    print(backend_message);
-    setState(() {
-      message = backend_message;
-      isTalking = false;
-    });
+  Ping api = APIPing();
+  Ping database = DatabasePing();
+
+  Future<void> pingBackend(int option) async {
+    setState(() {message = "Attempting to ping"; isTalking = true;});
+    String backend_message = "";
+    switch (option) {
+      case 0: backend_message = await api.checkStatus();
+      case 1: backend_message = await database.checkStatus();
+    }
+    setState(() {message = backend_message; isTalking = false;});
   }
 
   @override
@@ -54,8 +53,12 @@ class HomeScreenState extends State<HomeScreen> {
                 child: Text(message, textAlign: TextAlign.center),
               ),
               ElevatedButton(
-                onPressed: isTalking ? null : pingBackend,
+                onPressed: isTalking ? null : () => pingBackend(0),
                 child: const Text('Check API status'),
+              ),
+              ElevatedButton(
+                onPressed: isTalking ? null : () => pingBackend(1),
+                child: const Text('Check Database status'),
               ),
             ],
           ),
