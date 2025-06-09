@@ -2,6 +2,7 @@ from fastapi import FastAPI, Response, status, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from database.database import get_new_session
+from database.models import *
 
 app = FastAPI()
 
@@ -18,5 +19,5 @@ async def GET_status(db: Session = Depends(get_new_session)):
         return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @app.get("/wifi/nearby")
-async def GET_wifi_nearby(lat: float, long: float, radius: int):
+async def GET_wifi_nearby(lat: float, long: float, radius: int, db: Session = Depends(get_new_session)):
     return str(lat) + "," + str(long) + "," + str(radius)
