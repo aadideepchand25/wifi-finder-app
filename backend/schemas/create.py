@@ -6,6 +6,10 @@ from datetime import date, time
 
 class wifi_id(BaseModel):
     id: int
+    
+    model_config = {
+        "from_attributes": True
+    }
 
 class wifi_location(BaseModel):
     latitude: float

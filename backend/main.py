@@ -20,8 +20,8 @@ async def GET_status(db: Session = Depends(get_new_session)):
         return Response(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @app.get("/wifi/nearby", response_model=list[s.read.wifi_id_read])
-async def GET_wifi_nearby(location: s.create.wifi_location, radius: int, db: Session = Depends(get_new_session)):
-    return    
+async def GET_wifi_nearby(radius: int, location: s.create.wifi_location = Depends(), db: Session = Depends(get_new_session)):
+    return dq.query_wifi_id_by_location(db, location.latitude, location.longitude, radius)
 
 @app.get("/wifi/info", response_model=s.read.wifi)
 async def GET_wifi_info(id: int, db: Session = Depends(get_new_session)):
